@@ -1,0 +1,52 @@
+#define BLYNK_TEMPLATE_ID "TMPLKvmDpCra"
+#define BLYNK_DEVICE_NAME "2"
+
+
+#define BLYNK_FIRMWARE_VERSION        "0.1.0"
+
+#define BLYNK_PRINT Serial
+//#define BLYNK_DEBUG
+
+#define APP_DEBUG
+
+// Uncomment your board, or configure a custom board in Settings.h
+//#define USE_SPARKFUN_BLYNK_BOARD
+#define USE_NODE_MCU_BOARD
+//#define USE_WITTY_CLOUD_BOARD
+//#define USE_WEMOS_D1_MINI
+bool B_S1=LOW,S_S1=LOW;
+int B_prevS1,S_prevS1=0;
+#include "BlynkEdgent.h"
+BLYNK_WRITE(V0){
+int pinValue1 = param.asInt();
+if(B_prevS1 != pinValue1)
+    {
+      if(B_S1=LOW)
+          B_S1=HIGH;
+      else if(B_S1=HIGH)
+          B_S1=LOW;    
+    }
+    digitalWrite(LED_BUILTIN,B_S1);
+}
+void setup()
+{
+  Serial.begin(115200);
+  delay(100);
+  pinMode(D1,INPUT);
+  pinMode(D8,OUTPUT);
+  BlynkEdgent.begin();
+}
+
+void loop() {
+  BlynkEdgent.run();
+  int SwValue1 = digitalRead(D1);
+  if(S_prevS1 != SwValue1)
+    {
+      if(S_S1=LOW)
+          S_S1=HIGH;
+      else if(S_S1=HIGH)
+          S_S1=LOW;    
+    }
+    digitalWrite(LED_BUILTIN,S_S1);
+}
+
